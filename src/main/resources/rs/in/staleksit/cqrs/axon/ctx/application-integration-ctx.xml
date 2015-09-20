@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:axon="http://www.axonframework.org/schema/core"
@@ -8,10 +9,10 @@
     <axon:event-bus id="eventBus"/>
  
     <axon:event-sourcing-repository id="catalogEventRepository"
-                                    aggregate-type="rs.in.staleksit.cqrs.axon.command.model.CatalogItem"/>
+                                    aggregate-type="rs.in.staleksit.cqrs.axon.command.model.catalog.impl.CatalogItem"/>
  
     <axon:aggregate-command-handler id="catalogItemHandler"
-                                    aggregate-type="rs.in.staleksit.cqrs.axon.command.model.CatalogItem"
+                                    aggregate-type="rs.in.staleksit.cqrs.axon.command.model.catalog.impl.CatalogItem"
                                     repository="catalogEventRepository"
                                     command-bus="commandBus"/>
  	

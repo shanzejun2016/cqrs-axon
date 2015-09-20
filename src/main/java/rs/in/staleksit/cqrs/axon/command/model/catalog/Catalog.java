@@ -1,7 +1,7 @@
 /**
  * 
  */
-package rs.in.staleksit.cqrs.axon.command.model;
+package rs.in.staleksit.cqrs.axon.command.model.catalog;
 
 /**
  *
@@ -12,5 +12,7 @@ public interface Catalog {
 	
 	
 	String getName();
+	
+	void setName(String name);
 
 }

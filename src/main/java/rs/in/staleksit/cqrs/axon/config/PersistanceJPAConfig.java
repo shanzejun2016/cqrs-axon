@@ -24,7 +24,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:/rs/in/staleksit/cqrs/axon/cfg/db.properties")
-@EnableJpaRepositories("rs.in.staleksit.cqrs.axon.command.repository")
+@EnableJpaRepositories("rs.in.staleksit.cqrs.axon.command.repository.catalog")
 public class PersistanceJPAConfig {
 	
 	private static final int MAXIMUM_POOL_SIZE_ACCEPTANCE = 25;
@@ -67,7 +67,7 @@ public class PersistanceJPAConfig {
 		em.setPersistenceUnitName("pu_cqrs_axon");
 		em.setJpaVendorAdapter(getJPAVendorAdapter());
 		em.setJpaProperties(jpaProperties());
-		em.setPackagesToScan("rs.in.staleksit.cqrs.axon.command.model.impl");
+		em.setPackagesToScan("rs.in.staleksit.cqrs.axon.command.model.catalog.impl");
 		em.setDataSource(dataSource());
 		em.afterPropertiesSet();
 		

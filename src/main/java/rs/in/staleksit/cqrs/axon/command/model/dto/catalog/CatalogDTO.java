@@ -1,10 +1,10 @@
-package rs.in.staleksit.cqrs.axon.command.model.dto;
+package rs.in.staleksit.cqrs.axon.command.model.dto.catalog;
 
 import java.io.Serializable;
 
 import org.jtransfo.DomainClass;
 
-import rs.in.staleksit.cqrs.axon.command.model.impl.CatalogImpl;
+import rs.in.staleksit.cqrs.axon.command.model.catalog.impl.CatalogImpl;
 
 @DomainClass(domainClass = CatalogImpl.class)
 public class CatalogDTO implements Serializable {

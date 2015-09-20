@@ -1,4 +1,4 @@
-package rs.in.staleksit.cqrs.axon.eventhandler;
+package rs.in.staleksit.cqrs.axon.eventhandler.catalog;
 
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.slf4j.Logger;
@@ -6,10 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import rs.in.staleksit.cqrs.axon.command.model.CatalogCreatedEvent;
-import rs.in.staleksit.cqrs.axon.command.model.dto.CatalogDTO;
-import rs.in.staleksit.cqrs.axon.command.model.impl.CatalogImpl;
-import rs.in.staleksit.cqrs.axon.command.service.CatalogService;
+import rs.in.staleksit.cqrs.axon.command.model.catalog.event.CatalogCreatedEvent;
+import rs.in.staleksit.cqrs.axon.command.model.catalog.impl.CatalogImpl;
+import rs.in.staleksit.cqrs.axon.command.model.dto.catalog.CatalogDTO;
+import rs.in.staleksit.cqrs.axon.command.service.catalog.CatalogService;
 
 @Component
 public class CatalogCreatedEventHandler {
