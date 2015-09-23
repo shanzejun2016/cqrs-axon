@@ -29,6 +29,7 @@ public class PersistanceJPAConfig {
 	
 	private static final int MAXIMUM_POOL_SIZE_ACCEPTANCE = 25;
 	
+	@SuppressWarnings("unused")
 	@Autowired
 	private Environment env;
 	

@@ -1,13 +1,13 @@
 package rs.in.staleksit.cqrs.axon.command.model.catalog;
 
-import org.axonframework.commandhandling.annotation.CommandHandler;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.axonframework.domain.MetaData;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier;
 
-import rs.in.staleksit.cqrs.axon.command.model.catalog.command.CatalogCreateCommand;
-import rs.in.staleksit.cqrs.axon.command.model.catalog.command.CatalogDeleteCommand;
-import rs.in.staleksit.cqrs.axon.command.model.catalog.command.CatalogUpdateCommand;
 import rs.in.staleksit.cqrs.axon.command.model.catalog.event.CatalogCreatedEvent;
 import rs.in.staleksit.cqrs.axon.command.model.catalog.event.CatalogDeletedEvent;
 import rs.in.staleksit.cqrs.axon.command.model.catalog.event.CatalogUpdatedEvent;
@@ -21,13 +21,16 @@ public class CatalogItem extends AbstractAnnotatedAggregateRoot<String>{
 	private String catalogName;
 	
 	public CatalogItem() {
-		
+		// needed by framework
 	}
 	
-	// CREATE
-	@CommandHandler
-	public CatalogItem(CatalogCreateCommand command) {
-		apply(new CatalogCreatedEvent(command.getCatalogId(), command.getCatalogName()));
+	/**
+	 * default constructor
+	 * @param catalogId
+	 * @param catalogName
+	 */
+	public CatalogItem(String catalogId, String catalogName) {
+		apply(new CatalogCreatedEvent(catalogId, catalogName));
 	}
 	
 	@EventHandler
@@ -36,10 +39,11 @@ public class CatalogItem extends AbstractAnnotatedAggregateRoot<String>{
         this.catalogName = event.getCatalogName();
     }
 	
-	// UPDATE
-	@CommandHandler
-	public void catalogUpdated(CatalogUpdateCommand command) {
-		apply(new CatalogUpdatedEvent(command.getCatalogId(), command.getCatalogName()));
+	public void update(String catalogId, String newCatalogName) {
+		Map<String, String> someUsefullInformation = new HashMap<String, String>();
+		someUsefullInformation.put("IP-Address", "127.0.0.1");
+
+		apply(new CatalogUpdatedEvent(catalogId, newCatalogName), MetaData.from(someUsefullInformation));
 	}
 	
 	@EventHandler
@@ -47,11 +51,9 @@ public class CatalogItem extends AbstractAnnotatedAggregateRoot<String>{
         this.catalogId = event.getCatalogId();
         this.catalogName = event.getCatalogName();
     }
-
-	// DELETE
-	@CommandHandler
-	public void catalogDeleted(CatalogDeleteCommand command) {
-		apply(new CatalogDeletedEvent(command.getCatalogId()));
+	
+	public void delete(String catalogId) {
+		apply(new CatalogDeletedEvent(catalogId));
 	}
 	
 	public String getCatalogName() {

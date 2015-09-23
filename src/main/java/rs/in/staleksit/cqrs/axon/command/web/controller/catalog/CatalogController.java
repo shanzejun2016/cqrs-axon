@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
+import rs.in.staleksit.cqrs.axon.api.catalog.CatalogCommandAPI;
 import rs.in.staleksit.cqrs.axon.command.model.catalog.command.CatalogCreateCommand;
 import rs.in.staleksit.cqrs.axon.command.model.catalog.command.CatalogDeleteCommand;
 import rs.in.staleksit.cqrs.axon.command.model.catalog.command.CatalogUpdateCommand;
@@ -34,7 +35,7 @@ import rs.in.staleksit.cqrs.axon.command.model.catalog.command.CatalogUpdateComm
  */
 @RestController
 @Api(value = "/catalog", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-public class CatalogController {
+public class CatalogController implements CatalogCommandAPI {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CatalogController.class);
 
@@ -56,9 +57,9 @@ public class CatalogController {
 		LOG.info("catalogName: {}", catalogName);
 		if (!StringUtils.isBlank(catalogName)) {
 			String catalogId = UUID.randomUUID().toString();
-			LOG.info("catalogId: {}", catalogId);
+			LOG.debug("catalogId: {}", catalogId);
 			commandGateway.send(new CatalogCreateCommand(catalogId, catalogName));
-			return new ResponseEntity<String>(catalogId, HttpStatus.CREATED);
+			return new ResponseEntity<String>(catalogId, HttpStatus.ACCEPTED);
 		} else {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
@@ -105,7 +106,7 @@ public class CatalogController {
 	public ResponseEntity<String> handleDeleteCatalog(@ApiParam(value = "Unique identifier of catalog", required = true) @PathVariable("catalogId") String catalogId) {
 		LOG.info("catalogId: {}", catalogId);
 		if (StringUtils.isNotBlank(catalogId)) {
-			LOG.info("Deleting catalog with id: {}", catalogId);
+			LOG.debug("Deleting catalog with id: {}", catalogId);
 			commandGateway.send(new CatalogDeleteCommand(catalogId));
 			return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 		} else {
