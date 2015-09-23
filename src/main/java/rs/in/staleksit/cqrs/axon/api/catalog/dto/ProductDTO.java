@@ -1,7 +1,7 @@
 /**
  * 
  */
-package rs.in.staleksit.cqrs.axon.command.model.dto.catalog;
+package rs.in.staleksit.cqrs.axon.api.catalog.dto;
 
 import java.io.Serializable;
 

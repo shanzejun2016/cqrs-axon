@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 
 @RestController
-@RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
 @Api(value = "/catalog", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public interface CatalogCommandAPI {
 	
@@ -25,8 +25,7 @@ public interface CatalogCommandAPI {
 	 * @param catalogName
 	 * @return
 	 */
-	@RequestMapping(value = "/catalogs", method = RequestMethod.POST, 
-			consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/catalogs", method = RequestMethod.POST)
 	@ApiOperation(value = "Create Catalog", response = ResponseEntity.class, authorizations = {
 			@Authorization(value = "api_key") })
 	@ApiResponses(value = { 
@@ -41,8 +40,7 @@ public interface CatalogCommandAPI {
 	 * @param newCatalogName
 	 * @return
 	 */
-	@RequestMapping(value = "/catalog/{catalogId}", method = RequestMethod.PUT, 
-			consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/catalog/{catalogId}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Updates Catalog", response = ResponseEntity.class, authorizations = {
 			@Authorization(value = "api_key") })
 	@ApiResponses(value = { 
@@ -59,8 +57,7 @@ public interface CatalogCommandAPI {
 	 * @param catalogId
 	 * @return
 	 */
-	@RequestMapping(value = "/catalog/{catalogId}", method = RequestMethod.DELETE, 
-			consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/catalog/{catalogId}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete Catalog", response = ResponseEntity.class, authorizations = {
 			@Authorization(value = "api_key") })
 	@ApiResponses(value = { 
