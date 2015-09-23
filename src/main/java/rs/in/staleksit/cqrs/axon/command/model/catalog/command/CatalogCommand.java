@@ -2,17 +2,20 @@ package rs.in.staleksit.cqrs.axon.command.model.catalog.command;
 
 import java.io.Serializable;
 
+import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
+
 @SuppressWarnings("serial")
 public abstract class CatalogCommand implements Serializable {
 	
-	private final String catalogName;
+	@TargetAggregateIdentifier
+	private final String catalogId;
 
-	public CatalogCommand(String name) {
-		this.catalogName = name;
+	public CatalogCommand(String catalogId) {
+		this.catalogId = catalogId;
 	}
 	
-	public String getCatalogName() {
-		return catalogName;
+	public String getCatalogId() {
+		return catalogId;
 	}
 
 }

@@ -1,4 +1,4 @@
-package rs.in.staleksit.cqrs.axon.command.model.catalog.impl;
+package rs.in.staleksit.cqrs.axon.command.model.catalog;
 
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.eventhandling.annotation.EventHandler;
@@ -16,8 +16,10 @@ public class CatalogItem extends AbstractAnnotatedAggregateRoot<String>{
 	private static final long serialVersionUID = 3499110356966221166L;
 	
 	@AggregateIdentifier
-	private String id;
-		
+	private String catalogId;
+	
+	private String catalogName;
+	
 	public CatalogItem() {
 		
 	}
@@ -25,34 +27,35 @@ public class CatalogItem extends AbstractAnnotatedAggregateRoot<String>{
 	// CREATE
 	@CommandHandler
 	public CatalogItem(CatalogCreateCommand command) {
-		apply(new CatalogCreatedEvent(command.getCatalogName()));
+		apply(new CatalogCreatedEvent(command.getCatalogId(), command.getCatalogName()));
 	}
 	
 	@EventHandler
-    public void on(CatalogCreatedEvent event) {
-        this.id = event.getCatalogName();
+    public void onCatalogCreated(CatalogCreatedEvent event) {
+        this.catalogId = event.getCatalogId();
+        this.catalogName = event.getCatalogName();
     }
 	
 	// UPDATE
 	@CommandHandler
-	public CatalogItem(CatalogUpdateCommand command) {
+	public void catalogUpdated(CatalogUpdateCommand command) {
 		apply(new CatalogUpdatedEvent(command.getCatalogId(), command.getCatalogName()));
 	}
-
-	@EventHandler
-    public void on(CatalogUpdatedEvent event) {
-        this.id = event.getCatalogName();
-    }
 	
+	@EventHandler
+    public void onCatalogUpdated(CatalogUpdatedEvent event) {
+        this.catalogId = event.getCatalogId();
+        this.catalogName = event.getCatalogName();
+    }
+
 	// DELETE
 	@CommandHandler
-	public CatalogItem(CatalogDeleteCommand command) {
-		apply(new CatalogDeletedEvent(command.getCatalogId(), command.getCatalogName()));
+	public void catalogDeleted(CatalogDeleteCommand command) {
+		apply(new CatalogDeletedEvent(command.getCatalogId()));
 	}
-
-	@EventHandler
-    public void on(CatalogDeletedEvent event) {
-        this.id = event.getCatalogName();
-    }
 	
+	public String getCatalogName() {
+		return catalogName;
+	}
+		
 }

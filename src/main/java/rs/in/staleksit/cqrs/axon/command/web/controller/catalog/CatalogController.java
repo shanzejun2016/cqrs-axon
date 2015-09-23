@@ -3,6 +3,8 @@
  */
 package rs.in.staleksit.cqrs.axon.command.web.controller.catalog;
 
+import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.slf4j.Logger;
@@ -23,11 +25,9 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
-import rs.in.staleksit.cqrs.axon.command.model.catalog.Catalog;
 import rs.in.staleksit.cqrs.axon.command.model.catalog.command.CatalogCreateCommand;
 import rs.in.staleksit.cqrs.axon.command.model.catalog.command.CatalogDeleteCommand;
 import rs.in.staleksit.cqrs.axon.command.model.catalog.command.CatalogUpdateCommand;
-import rs.in.staleksit.cqrs.axon.command.service.catalog.CatalogService;
 
 /**
  *
@@ -41,9 +41,6 @@ public class CatalogController {
 	@Autowired
 	private CommandGateway commandGateway;
 
-	@Autowired
-	private CatalogService catalogService;
-
 	/**
 	 * 
 	 * @param catalogName
@@ -53,13 +50,15 @@ public class CatalogController {
 			MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Create Catalog", response = ResponseEntity.class, authorizations = {
 			@Authorization(value = "api_key") })
-	@ApiResponses(value = { @ApiResponse(code = 202, message = "Creating Catalog accepted."), 
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Creating Catalog accepted."), 
 			@ApiResponse(code = 400, message = "Invalid catalogName supplied")})
 	public ResponseEntity<String> handleCreateCatalog(@ApiParam(value = "Name of catalog to be created", required = true) @RequestBody String catalogName) {
 		LOG.info("catalogName: {}", catalogName);
 		if (!StringUtils.isBlank(catalogName)) {
-			commandGateway.send(new CatalogCreateCommand(catalogName));
-			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+			String catalogId = UUID.randomUUID().toString();
+			LOG.info("catalogId: {}", catalogId);
+			commandGateway.send(new CatalogCreateCommand(catalogId, catalogName));
+			return new ResponseEntity<String>(catalogId, HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
@@ -70,7 +69,7 @@ public class CatalogController {
 	 * @param catalogName
 	 * @return
 	 */
-	@RequestMapping(value = "/catalog/{id}", method = RequestMethod.PUT, consumes = {
+	@RequestMapping(value = "/catalog/{catalogId}", method = RequestMethod.PUT, consumes = {
 			MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Updates Catalog", response = ResponseEntity.class, authorizations = {
 			@Authorization(value = "api_key") })
@@ -79,18 +78,14 @@ public class CatalogController {
 			@ApiResponse(code = 400, message = "Unique identifier of Catalog and/or new catalog name not supplied"),
 			@ApiResponse(code = 404, message = "Catalog with such identifier not known in system")
 			})	
-	public ResponseEntity<String> handleUpdateCatalog(@ApiParam(value = "Unique identifier of catalog to be updated", required = true) @PathVariable("id") Integer id, 
-			@ApiParam(value = "New provided catalog name", required = true) @RequestBody String catalogName) {
-		LOG.info("id: {}, catalogName: {}", id, catalogName);
-		if (catalogService.findOneById(id) == null) {
-			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<String> handleUpdateCatalog(@ApiParam(value = "Unique identifier of catalog to be updated", required = true) @PathVariable("catalogId") String catalogId, 
+			@ApiParam(value = "New provided catalog name", required = true) @RequestBody String newCatalogName) {
+		LOG.info("catalogId: {}, newCatalogName: {}", catalogId, newCatalogName);
 		
-		if (StringUtils.isBlank(catalogName)) {
+		if (StringUtils.isBlank(newCatalogName)) {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
-		
-		commandGateway.send(new CatalogUpdateCommand(id, catalogName));
+		commandGateway.send(new CatalogUpdateCommand(catalogId, newCatalogName));
 		return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 	}
 
@@ -99,7 +94,7 @@ public class CatalogController {
 	 * @param catalogName
 	 * @return
 	 */
-	@RequestMapping(value = "/catalog/{id}", method = RequestMethod.DELETE, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/catalog/{catalogId}", method = RequestMethod.DELETE, produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Delete Catalog", response = ResponseEntity.class, authorizations = {
 			@Authorization(value = "api_key") })
 	@ApiResponses(value = { 
@@ -107,17 +102,12 @@ public class CatalogController {
 			@ApiResponse(code = 400, message = "Unique identifier of Catalog not supplied"),
 			@ApiResponse(code = 404, message = "Catalog with such identifier not known in system")
 			})
-	public ResponseEntity<String> handleDeleteCatalog(@ApiParam(value = "Unique identifier of catalog", required = true) @PathVariable("id") Integer id) {
-		LOG.info("id: {}", id);
-		if (id != null) {
-			Catalog existingCatalog = catalogService.findOneById(id);
-			if (existingCatalog != null) {
-				LOG.info("Deleting catalog with id: {}", id);
-				commandGateway.send(new CatalogDeleteCommand(existingCatalog.getId(), existingCatalog.getName()));
-				return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
-			} else {
-				return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
-			}
+	public ResponseEntity<String> handleDeleteCatalog(@ApiParam(value = "Unique identifier of catalog", required = true) @PathVariable("catalogId") String catalogId) {
+		LOG.info("catalogId: {}", catalogId);
+		if (StringUtils.isNotBlank(catalogId)) {
+			LOG.info("Deleting catalog with id: {}", catalogId);
+			commandGateway.send(new CatalogDeleteCommand(catalogId));
+			return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}

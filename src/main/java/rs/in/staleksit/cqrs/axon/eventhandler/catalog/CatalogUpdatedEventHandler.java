@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import rs.in.staleksit.cqrs.axon.command.model.catalog.event.CatalogUpdatedEvent;
 import rs.in.staleksit.cqrs.axon.command.model.dto.catalog.CatalogDTO;
-import rs.in.staleksit.cqrs.axon.command.service.catalog.CatalogService;
+import rs.in.staleksit.cqrs.axon.query.service.catalog.CatalogService;
 
 @Component
 public class CatalogUpdatedEventHandler {

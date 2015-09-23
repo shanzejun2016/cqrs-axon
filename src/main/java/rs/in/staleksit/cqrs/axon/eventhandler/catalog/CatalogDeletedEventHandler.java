@@ -6,9 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import rs.in.staleksit.cqrs.axon.command.model.catalog.Catalog;
 import rs.in.staleksit.cqrs.axon.command.model.catalog.event.CatalogDeletedEvent;
-import rs.in.staleksit.cqrs.axon.command.service.catalog.CatalogService;
+import rs.in.staleksit.cqrs.axon.query.service.catalog.CatalogService;
 
 @Component
 public class CatalogDeletedEventHandler {
@@ -20,9 +19,8 @@ public class CatalogDeletedEventHandler {
 	
 	@EventHandler
 	public void handle(CatalogDeletedEvent event) {
-		Catalog catalogToDelete = catalogService.findOneById(event.getCatalogId());
-		catalogService.delete(catalogToDelete);
-		LOG.info("System deleted Catalog with [id: {}, name: {}]", event.getCatalogId(), event.getCatalogName());
+		catalogService.delete(event.getCatalogId());
+		LOG.info("System deleted Catalog with [id: {}]", event.getCatalogId());
 	}
 
 }

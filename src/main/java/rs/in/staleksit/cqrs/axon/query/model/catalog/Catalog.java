@@ -1,15 +1,14 @@
 /**
  * 
  */
-package rs.in.staleksit.cqrs.axon.command.model.catalog;
+package rs.in.staleksit.cqrs.axon.query.model.catalog;
 
 /**
  *
  */
 public interface Catalog {
 	
-	Integer getId();
-	
+	String getId();
 	
 	String getName();
 	

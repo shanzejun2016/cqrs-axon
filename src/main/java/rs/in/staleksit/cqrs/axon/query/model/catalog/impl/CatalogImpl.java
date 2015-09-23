@@ -1,25 +1,28 @@
-package rs.in.staleksit.cqrs.axon.command.model.catalog.impl;
+package rs.in.staleksit.cqrs.axon.query.model.catalog.impl;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import rs.in.staleksit.cqrs.axon.command.model.catalog.Catalog;
+import rs.in.staleksit.cqrs.axon.query.model.catalog.Catalog;
 
 /**
  * `ca_catalog` cqrs-axon catalog/ (ca) catalog 
  */
 @Entity
 @Table(name = "ca_catalog")
-public class CatalogImpl extends AbstractPersistable<Integer> implements Catalog {
-	private static final long serialVersionUID = -2814560779495636277L;
+public class CatalogImpl implements Catalog {
 
+	@Id
+	@Column(name = "id")
+	private String id;
+	
 	@Column(name = "name", nullable = false)
 	private String name;
 	
@@ -27,8 +30,13 @@ public class CatalogImpl extends AbstractPersistable<Integer> implements Catalog
 		// Intentionally blank for JPA
 	}
 	
-	public CatalogImpl(String name) {
+	public CatalogImpl(String id, String name) {
+		this.id = id;
 		this.name = name;
+	}
+	
+	public String getId() {
+		return this.id;
 	}
 
 	public String getName() {
@@ -36,6 +44,7 @@ public class CatalogImpl extends AbstractPersistable<Integer> implements Catalog
 	}
 
 	public void setName(String name) {
+		
 		this.name = name;
 	}
 	
@@ -62,5 +71,6 @@ public class CatalogImpl extends AbstractPersistable<Integer> implements Catalog
 	public boolean equals(Object obj) {
 		return EqualsBuilder.reflectionEquals(this, obj, false);
 	}
+
 
 }

@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.jtransfo.DomainClass;
 import org.jtransfo.MappedBy;
 
-import rs.in.staleksit.cqrs.axon.command.model.catalog.impl.ProductImpl;
+import rs.in.staleksit.cqrs.axon.query.model.catalog.impl.ProductImpl;
 
 /**
  *
@@ -21,7 +21,7 @@ import rs.in.staleksit.cqrs.axon.command.model.catalog.impl.ProductImpl;
 public class ProductDTO implements Serializable {
 	private static final long serialVersionUID = 4295027659398421336L;
 	
-	private Integer id;
+	private String id;
 	private String name;
 	private boolean archived;
 	private String manufacturer;
@@ -32,10 +32,10 @@ public class ProductDTO implements Serializable {
 	private String catalogName;
 	
 	
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {

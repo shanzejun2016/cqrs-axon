@@ -9,10 +9,10 @@
     <axon:event-bus id="eventBus"/>
  
     <axon:event-sourcing-repository id="catalogEventRepository"
-                                    aggregate-type="rs.in.staleksit.cqrs.axon.command.model.catalog.impl.CatalogItem"/>
+                                    aggregate-type="rs.in.staleksit.cqrs.axon.command.model.catalog.CatalogItem"/>
  
     <axon:aggregate-command-handler id="catalogItemHandler"
-                                    aggregate-type="rs.in.staleksit.cqrs.axon.command.model.catalog.impl.CatalogItem"
+                                    aggregate-type="rs.in.staleksit.cqrs.axon.command.model.catalog.CatalogItem"
                                     repository="catalogEventRepository"
                                     command-bus="commandBus"/>
  	

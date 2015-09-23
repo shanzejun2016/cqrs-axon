@@ -5,14 +5,15 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public abstract class CatalogEvent implements Serializable {
 	
-	private final String catalogName;
+	private final String catalogId;
 	
-	public CatalogEvent(String name) {
-		this.catalogName = name;
+	public CatalogEvent(String catalogId) {
+		this.catalogId = catalogId;
 	}
 
-	public String getCatalogName() {
-		return catalogName;
+	public String getCatalogId() {
+		return catalogId;
 	}
+	
 
 }

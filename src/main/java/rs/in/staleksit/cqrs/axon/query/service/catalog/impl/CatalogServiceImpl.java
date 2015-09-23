@@ -1,17 +1,16 @@
-package rs.in.staleksit.cqrs.axon.command.service.catalog.impl;
+package rs.in.staleksit.cqrs.axon.query.service.catalog.impl;
 
 
 import org.jtransfo.JTransfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import rs.in.staleksit.cqrs.axon.command.model.catalog.Catalog;
-import rs.in.staleksit.cqrs.axon.command.model.catalog.impl.CatalogImpl;
 import rs.in.staleksit.cqrs.axon.command.model.dto.catalog.CatalogDTO;
-import rs.in.staleksit.cqrs.axon.command.repository.catalog.CatalogRepository;
-import rs.in.staleksit.cqrs.axon.command.service.catalog.CatalogService;
+import rs.in.staleksit.cqrs.axon.query.model.catalog.Catalog;
+import rs.in.staleksit.cqrs.axon.query.model.catalog.impl.CatalogImpl;
+import rs.in.staleksit.cqrs.axon.query.repository.CatalogRepository;
+import rs.in.staleksit.cqrs.axon.query.service.catalog.CatalogService;
 
 @Service("catalogService")
 public class CatalogServiceImpl implements CatalogService {
@@ -22,12 +21,6 @@ public class CatalogServiceImpl implements CatalogService {
 	@Autowired
 	private JTransfo jTransfo;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Catalog findOneById(Integer id) {
-		CatalogImpl catalogItem = catalogRepository.findOne(id);
-		return catalogItem;
-	}
-
 	@Transactional
 	public CatalogDTO save(Catalog catalog) {
 		CatalogImpl catalogImpl = catalogRepository.save((CatalogImpl) catalog);
@@ -35,7 +28,7 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Transactional
-	public CatalogDTO update(Integer id, String newCatalogName) {
+	public CatalogDTO update(String id, String newCatalogName) {
 		CatalogImpl catalogToUpdate = catalogRepository.findOne(id);
 		if (catalogToUpdate != null) {
 			catalogToUpdate.setName(newCatalogName);
@@ -44,8 +37,15 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Transactional
-	public void delete(Catalog catalog) {
-		catalogRepository.delete((CatalogImpl) catalog);
+	public void delete(String id) {
+		CatalogImpl catalogToDelete = catalogRepository.findOne(id);
+		if (catalogToDelete != null) {
+			catalogRepository.delete(catalogToDelete);
+		}
+	}
+
+	public Catalog findByName(String name) {
+		return catalogRepository.findByName(name);
 	}
 	
 }

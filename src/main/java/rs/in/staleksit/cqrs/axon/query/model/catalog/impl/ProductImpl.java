@@ -1,4 +1,4 @@
-package rs.in.staleksit.cqrs.axon.command.model.catalog.impl;
+package rs.in.staleksit.cqrs.axon.query.model.catalog.impl;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,12 +12,12 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import rs.in.staleksit.cqrs.axon.command.model.catalog.Catalog;
-import rs.in.staleksit.cqrs.axon.command.model.catalog.Product;
+import rs.in.staleksit.cqrs.axon.query.model.catalog.Catalog;
+import rs.in.staleksit.cqrs.axon.query.model.catalog.Product;
 
 @Entity
 @Table(name = "ca_product")
-public class ProductImpl extends AbstractPersistable<Integer>implements Product {
+public class ProductImpl extends AbstractPersistable<String>implements Product {
 	private static final long serialVersionUID = -3132333333312483806L;
 
 	@Column(name = "name", nullable = false)
