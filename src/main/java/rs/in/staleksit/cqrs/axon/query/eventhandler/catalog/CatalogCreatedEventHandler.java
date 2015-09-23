@@ -1,4 +1,4 @@
-package rs.in.staleksit.cqrs.axon.eventhandler.catalog;
+package rs.in.staleksit.cqrs.axon.query.eventhandler.catalog;
 
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.slf4j.Logger;
